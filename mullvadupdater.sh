@@ -22,13 +22,14 @@ if [ "$latestversion" \> "$currentversion" ]; then
 	dpkg -i $downloadfolder/*.deb &>/dev/null
 	if [ "$(dpkg -s mullvad-vpn | grep '^Version:' | awk '{ print $NF }')" == "$latestversion" ]; then
 	  printf -- "mullvad-vpn upgraded successfully from version %s to %s... \n" $currentversion $latestversion;
+	  printf -- "%(%Y-%m-%d %H:%M:%S)T [SUCCESS] mullvad-vpn upgraded to %s... \n" $(date +%s) $latestversion >> update.log >/dev/null;
 	  printf -- "Cleaning up %s... \n" $downloadfolder;
 	  rm -f $downloadfolder/*.deb
 	else
 	  printf -- "Installation of mullvad-vpn %s failed... \nTerminated... \n" $latestversion;
-	  printf -- "%(%Y-%m-%d %H:%M:%S)T [ERROR] Installation of mullvad-vpn %s failed... \n" $(date +%s) $latestversion >> update.log >/dev/null;
+	  printf -- "%(%Y-%m-%d %H:%M:%S)T [ERROR] mullvad-vpn %s upgrade failed... \n" $(date +%s) $latestversion >> update.log >/dev/null;
 	fi
 else
 	printf -- "mullvad-vpn %s is already installed... \nTerminated... \n" $latestversion;
-	printf -- "%(%Y-%m-%d %H:%M:%S)T mullvad-vpn %s is already installed... \n" $(date +%s) $latestversion >> update.log >/dev/null;
+	printf -- "%(%Y-%m-%d %H:%M:%S)T [INFO] mullvad-vpn %s is already installed... \n" $(date +%s) $latestversion >> update.log >/dev/null;
 fi
