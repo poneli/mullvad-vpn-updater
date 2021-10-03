@@ -6,7 +6,7 @@
 #### =====================================================================
 #### <VARIABLES>
 latestversion=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep -m1 '<meta property="og:title"' |sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
-currentversion=$(dpkg -s mullvad-vpn | awk '/^Version:/ { print $NF }')
+currentversion=$(mullvad version | awk '/Current version:/ { print $3 }')
 package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep "/mullvad/mullvadvpn-app/releases/download/${latestversion}/" | grep -m1 amd64.deb | cut -d '"' -f2)
 downloadfolder="/change/me/example/directory" # No trailing slash
 #### </VARIABLES>
@@ -20,7 +20,7 @@ if [[ $latestversion > $currentversion ]]; then
 	wget -q https://github.com$package -P $downloadfolder
 	printf "Installing update... \n";
 	dpkg -i $downloadfolder/*.deb &>/dev/null
-	if [[ $(dpkg -s mullvad-vpn | awk '/^Version:/ { print $NF }') = $latestversion ]]; then
+	if [[ $(mullvad version | awk '/Current version:/ { print $3 }') = $latestversion ]]; then
 	  printf -- "mullvad-vpn upgraded successfully from version %s to %s... \n" $currentversion $latestversion;
 	  printf -- "%(%Y-%m-%d %H:%M:%S)T [SUCCESS] mullvad-vpn upgraded to %s... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null;
 	  printf -- "Cleaning up %s... \n" $downloadfolder;
