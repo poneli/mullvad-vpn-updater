@@ -7,7 +7,7 @@
 #### <VARIABLES>
 latestversion=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep -m1 '<meta property="og:title"' |sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
 currentversion=$(dpkg -s mullvad-vpn | awk '/^Version:/ { print $NF }')
-package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep "/mullvad/mullvadvpn-app/releases/download/${lversion}/" | grep -m1 amd64.deb | cut -d '"' -f2)
+package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep "/mullvad/mullvadvpn-app/releases/download/${latestversion}/" | grep -m1 amd64.deb | cut -d '"' -f2)
 downloadfolder="/change/me/example/directory" # No trailing slash
 #### </VARIABLES>
 if [[ $EUID > 0 ]]; then
