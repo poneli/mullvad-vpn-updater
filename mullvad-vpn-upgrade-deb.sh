@@ -11,25 +11,25 @@ package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest |
 downloadfolder="/change/me/example/directory" # No trailing slash
 #### </VARIABLES>
 if [[ $EUID > 0 ]]; then
-	printf -- "Run with sudo... \n";
+	printf "Run with sudo... \n"
 	exit
 fi
 
 if [[ $latestversion > $currentversion ]]; then
-	printf -- "Downloading mullvad-vpn to %s... \n" $downloadfolder;
+	printf "Downloading mullvad-vpn to %s... \n" $downloadfolder
 	wget -q https://github.com$package -P $downloadfolder
 	printf "Installing update... \n";
 	dpkg -i $downloadfolder/*.deb &>/dev/null
 	if [[ $(mullvad version | awk '/Current version:/ { print $3 }') = $latestversion ]]; then
-	  printf -- "mullvad-vpn upgraded successfully from version %s to %s... \n" $currentversion $latestversion;
-	  printf -- "%(%Y-%m-%d %H:%M:%S)T [SUCCESS] mullvad-vpn upgraded to %s... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null;
-	  printf -- "Cleaning up %s... \n" $downloadfolder;
+	  printf "mullvad-vpn upgraded successfully from version %s to %s... \n" $currentversion $latestversion
+	  printf "%(%Y-%m-%d %H:%M:%S)T [SUCCESS] mullvad-vpn upgraded to %s... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null
+	  printf "Cleaning up %s... \n" $downloadfolder
 	  rm -f $downloadfolder/*.deb
 	else
-	  printf -- "Installation of mullvad-vpn %s failed... \nTerminated... \n" $latestversion;
-	  printf -- "%(%Y-%m-%d %H:%M:%S)T [ERROR] mullvad-vpn %s upgrade failed... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null;
+	  printf "Installation of mullvad-vpn %s failed... \nTerminated... \n" $latestversion
+	  printf "%(%Y-%m-%d %H:%M:%S)T [ERROR] mullvad-vpn %s upgrade failed... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null
 	fi
 else
-	printf -- "mullvad-vpn %s is already installed... \nTerminated... \n" $latestversion;
-	printf -- "%(%Y-%m-%d %H:%M:%S)T [INFO] mullvad-vpn %s is already installed... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null;
+	printf "mullvad-vpn %s is already installed... \nTerminated... \n" $latestversion
+	printf "%(%Y-%m-%d %H:%M:%S)T [INFO] mullvad-vpn %s is already installed... \n" $(date +%s) $latestversion | tee -a $downloadfolder/update.log >/dev/null
 fi
