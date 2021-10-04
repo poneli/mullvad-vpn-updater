@@ -11,7 +11,7 @@ package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest |
 downloadfolder="/change/me/example/directory" # No trailing slash
 #### </VARIABLES>
 if [[ $EUID > 0 ]]; then
-	printf -- "Run with sudo... \n"
+	printf "Run with sudo... \n"
 	exit
 fi
 
