@@ -5,7 +5,7 @@
 #### Published on: https://github.com/poneli/
 #### =====================================================================
 #### <VARIABLES>
-latestversion=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep -m1 '<meta property="og:title"' |sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')
+latestversion=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep -m1 "/mullvad/mullvadvpn-app/releases/tag/" | cut -d '/' -f 9 | cut -d '"' -f 1)
 currentversion=$(mullvad version | awk '/Current version:/ { print $3 }')
 package=$(curl -s -L https://github.com/mullvad/mullvadvpn-app/releases/latest | grep "/mullvad/mullvadvpn-app/releases/download/$latestversion/" | grep -m1 .rpm | cut -d '"' -f2)
 downloadfolder="/change/me/example/directory" # No trailing slash
